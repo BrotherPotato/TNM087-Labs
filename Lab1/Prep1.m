@@ -20,18 +20,18 @@ min(Image3Double(:))
 clear
 Image = imread(".\Lab1_Images\einstein-low-contrast.tif");
 Image=im2double(Image);
-figure
-imshow(Image)
+%figure
+%imshow(Image)
 Gmax = max(Image(:))
 Gmin = min(Image(:))
 % install Image Processing Toolbox
-figure 
-imhist(Image)
+%figure 
+%imhist(Image)
 %histogram(Image)
 K = 1 % 255
 GsImage = K * (Image - Gmin)/(Gmax-Gmin);
-figure
-imhist(GsImage)
+%figure
+%imhist(GsImage)
 % 3 Image subtraction
 clear
 ImageMask = imread(".\Lab1_Images\angiography-mask-image.tif");
@@ -40,7 +40,19 @@ ImageMask=im2double(ImageMask);
 ImageLive=im2double(ImageLive);
 
 ImageDiff = ImageLive - ImageMask;
-figure
-imshow(ImageDiff,[]) 
+%figure
+%imshow(ImageDiff,[]) 
 % 4 Histogram equalization
-
+Image = imread(".\Lab1_Images\pollen-lowcontrast.tif");
+Image=im2double(Image);
+%figure
+%imshow(ImageDiff) 
+%figure
+%imshow(ImageDiff, []) 
+min(Image(:))
+max(Image(:))
+%figure
+%imhist(Image)
+% 5 Image division and shading correction
+Image = imread(".\Lab1_Images\Shade_pattern.tif");
+Image=im2double(Image);
