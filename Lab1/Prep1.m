@@ -10,3 +10,4 @@ max(Image(:))
 min(Image(:))
 A = uint8(0:255)
 B = (A/16)*16
+Image=double(Image)/255;
