@@ -42,5 +42,3 @@ ImageLive=im2double(ImageLive);
 ImageDiff = ImageLive - ImageMask;
 figure
 imshow(ImageDiff,[]) 
-% 4 Histogram equalization
-
