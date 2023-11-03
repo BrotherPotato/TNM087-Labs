@@ -21,5 +21,10 @@ clear
 Image = imread(".\Lab1_Images\einstein-low-contrast.tif", "tif");
 Image=im2double(Image);
 imshow(Image)
-max(Image(:))
-min(Image(:))
+Gmax = max(Image(:))
+Gmin = min(Image(:))
+% install Image Processing Toolbox
+%imhist(Image)
+%histogram(Image)
+K = 1 % 255
+Gs = K * (Image - Gmin)/(Gmax-Gmin)
