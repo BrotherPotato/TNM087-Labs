@@ -36,8 +36,8 @@ Gmin = min(Image(:))
 %imhist(Image)
 K = 1 % for double
 GsImage = K * (Image - Gmin)/(Gmax-Gmin);
-figure 
-imshow(GsImage)
+%figure 
+%imshow(GsImage)
 imwrite(GsImage, '.\Saved_Images\EinsteinScaled.tif');
 %figure
 %imhist(GsImage)
@@ -51,21 +51,19 @@ ImageMask=im2double(ImageMask);
 ImageLive=im2double(ImageLive);
 
 ImageDiff = ImageLive - ImageMask;
-figure
-imshow(ImageDiff,[]) 
+%figure
+%imshow(ImageDiff,[]) 
 
 
 % 4 Histogram equalization
 Image = imread(".\Lab1_Images\pollen-lowcontrast.tif");
 Image=im2double(Image);
-%figured
-%imshow(ImageDiff) 
 %figure
-%imshow(ImageDiff, []) 
-min(Image(:))
-max(Image(:))
+%imshow(Image) 
 %figure
-%imhist(Image)
+%histeq(Image);
+%figure
+%imhist(histeq(Image))
 
 
 % 5 Image division and shading correction
