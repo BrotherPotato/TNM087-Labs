@@ -60,12 +60,10 @@ Image = imread(".\Lab1_Images\pollen-lowcontrast.tif");
 Image=im2double(Image);
 %figure
 %imshow(Image) 
-min(Image(:))
-max(Image(:))
-figure
-histeq(Image);
-figure
-imshow(Image)
+%figure
+%histeq(Image);
+%figure
+%imhist(histeq(Image))
 
 
 % 5 Image division and shading correction
@@ -82,11 +80,14 @@ ImagePatternEsti=im2double(ImagePatternEsti);
 imageDiffEsti = ImagePattern ./ ImagePatternEsti;
 %figure
 %imshow(imageDiffEsti)
+imwrite(imageDiffEsti, '.\Saved_Images\imageDiffEsti.tif');
 %figure
 %imhist(imageDiffEsti)
 
-T = 0.3; %??
-BW =imbinarize(Image,T);
+T = 0.5; %threshold between the black and white parts of the histogram
+BW = imbinarize(Image,T);
+figure
+imhist(BW)
 max(BW(:))
 
 

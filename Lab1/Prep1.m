@@ -80,13 +80,21 @@ ImagePatternEsti=im2double(ImagePatternEsti);
 imageDiffEsti = ImagePattern ./ ImagePatternEsti;
 %figure
 %imshow(imageDiffEsti)
+imwrite(imageDiffEsti, '.\Saved_Images\imageDiffEsti.tif');
 %figure
 %imhist(imageDiffEsti)
 
-T = 0.3; %??
-BW =imbinarize(Image,T);
+T = 0.3; %threshold between the black and white parts of the histogram
+%BW = imbinarize(Image,T);
+BW=ImagePattern>T
+figure
+imshow(BW)
+imwrite(BW, '.\Saved_Images\BW.tif');
+figure
+imhist(BW)
 max(BW(:))
-
+whos('BW');
+1048576 / (1024*1024)
 
 % 6 RGB-images and indexing
 I = zeros(400,600,3);
