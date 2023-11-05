@@ -51,12 +51,21 @@ function [RGB_Range, IR_Select] = LevelSlicing( RGB_Image, IR_Image, LevelRange)
 [nr,nc,nch] = size(RGB_Image); % Number of rows, columns and channels in the image
 
 
+RGB_Image = imread(RGB_Image);
+RGB_Image = im2double(RGB_Image);
+
+IR_Image = imread(IR_Image);
+IR_Image = im2double(IR_Image);
+
 %% Show the IR image to select a pixel with reference intensity value
 %
 
 fh1=figure; imshow(IR_Image);
 set(fh1,'NumberTitle','off','Name','Select a pixel for reference intensity level')
 [x,y] = ginput(1); % x and y are the coordinates of the reference pixel 
+
+x = round(x);
+y = round(y);
 
 % Note that x and y are not the same as row and column! 
 % Refer to the help-section for the function ginput for reference
@@ -66,18 +75,21 @@ set(fh1,'NumberTitle','off','Name','Select a pixel for reference intensity level
 % find the selected intensity level. Then compute the selected intensity range,
 % based on the vaiable LevelRange
 
-Lower = ... % The lowest intensity value in the selected range
-Higher = ... % The highest intensity value in the selected range
+Lower = IR_Image(x,y) - LevelRange/2; % The lowest intensity value in the selected range
+Higher = IR_Image(x,y) + LevelRange/2; % The highest intensity value in the selected range
     
 %% Mask out the areas ine th RGB image, based on the selected intensity range in the IR image
 % Compute a mask (binary image) from the IR image, which is ONE only where IR<Higher & IR>Lower
 
-Mask = ... %
+Mask = IR_Image<Higher & IR_Image>Lower %
     
 % Use the Mask to mask out the areas within ths selected IR-range in the RGB-images
 % (for all 3 color channels)
 
-RGB_Range = ... %
+%RGB_Range = ... %
+RGB_Range(:,:,1) = RGB_Range(:,:,1).*Mask;
+RGB_Range(:,:,2) = RGB_Range(:,:,2).*Mask;
+RGB_Range(:,:,3) = RGB_Range(:,:,3).*Mask;
     
 %% Show the selected pixel in the IR-image
 % Crete an image that shows the position of the selected pixel in the IR-image, using a red mark.
@@ -91,8 +103,9 @@ IR_Select=cat(3,IR_Image,IR_Image,IR_Image);
 % be displayed in grayscale. 
 % Now modify IR_select to mark the selected pixel in red!
 
-IR_Select(...) = ...
-    
+%IR_Select(...) = ...
+IR_Select(x-5:x+5,y,1) = 1
+IR_Select(x,y-5:y+5,1) = 1
 
 %% Display the result
 % The result is displayed. Use the following names and formats:
