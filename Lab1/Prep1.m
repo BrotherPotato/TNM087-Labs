@@ -75,16 +75,17 @@ BW =imbinarize(Image,T)
 
 % 6 RGB-images and indexing
 I = zeros(400,600,3);
+% dim Dimensions: 5:2:9 horizontally and 4:2:4 vertically.
+pos1 = round((600/(5+2+9)) * 5); % left to start of col
+pos2 = round((600/(5+2+9)) * (5+2)); % left to end of col
+pos3 = round((400/(4+2+4)) * 4); % top to start of row
+pos4 = round((400/(4+2+4)) * (4+2)); % top to end of row
 %col 
-pos1 = 255;
-pos2 = 375;
-pos3 = 150;
-pos4 = 250;
 I(:,pos1:pos2,2)=1; % G
 I(:,pos1:pos2,1)=1; % R
 % row
-I(pos3:250,:,1)=1; % R
-I(pos3:250,:,2)=1; % G
+I(pos3:pos4,:,1)=1; % R
+I(pos3:pos4,:,2)=1; % G
 % blue
 I(1:pos3,1:pos1,3)=1; % B
 I(pos4:400,pos2:600,3)=1; % B
