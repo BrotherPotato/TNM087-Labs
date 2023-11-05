@@ -1,13 +1,18 @@
+clear
+clc
 Image = imread(".\Lab1_Images\book-cover.tif");
-max(Image(:))
-min(Image(:))
+image1max = max(Image(:))
+image1min = min(Image(:))
 %
 Image2=Image/16;
-max(Image2(:))
-min(Image2(:))
+image2max = max(Image2(:))
+image2min = min(Image2(:))
+%figure
+%imshow(Image2)
 Image3=Image2*16;
-max(Image3(:))
-min(Image3(:))
+imwrite(Image3, '.\Saved_Images\Image3.tif');
+image3max = max(Image3(:))
+image3min = min(Image3(:))
 A = uint8(0:255)
 B = (A/16)*16
 ImageDouble=double(Image)/255;
@@ -70,8 +75,9 @@ imageDiffEsti = ImagePattern ./ ImagePatternEsti;
 %figure
 %imhist(imageDiffEsti)
 
-T = 100; %??
-BW =imbinarize(Image,T)
+T = 0.3; %??
+BW =imbinarize(Image,T);
+max(BW(:))
 
 % 6 RGB-images and indexing
 I = zeros(400,600,3);
@@ -92,5 +98,6 @@ I(pos4:400,pos2:600,3)=1; % B
 I(1:pos3,pos2:600,3)=1; % B
 I(pos4:400,1:pos1,3)=1; % B
 %create a Swedish flag
-figure
-imshow(I)
+%figure
+%imshow(I)
+imwrite(I, '.\Saved_Images\SwedishFlag.tif');
