@@ -13,13 +13,15 @@ Image3=Image2*16;
 imwrite(Image3, '.\Saved_Images\Image3.tif');
 image3max = max(Image3(:))
 image3min = min(Image3(:))
-A = uint8(0:255)
-B = (A/16)*16
+A = uint8(0:255);
+B = (A/16)*16;
 ImageDouble=double(Image)/255;
 Image2Double=ImageDouble/16;
 Image3Double=Image2Double*16;
-max(Image3Double(:))
-min(Image3Double(:))
+Image3doublemax = max(Image3Double(:))
+Image3doublemin = min(Image3Double(:))
+max(max(Image3Double - ImageDouble)) == 0
+
 
 % 2 Contrast stretching and image histogram
 clear
@@ -32,11 +34,15 @@ Gmin = min(Image(:))
 % install Image Processing Toolbox
 %figure 
 %imhist(Image)
-%histogram(Image)
-K = 1 % 255
+K = 1 % for double
 GsImage = K * (Image - Gmin)/(Gmax-Gmin);
+figure 
+imshow(GsImage)
+imwrite(GsImage, '.\Saved_Images\EinsteinScaled.tif');
 %figure
 %imhist(GsImage)
+
+
 % 3 Image subtraction
 clear
 ImageMask = imread(".\Lab1_Images\angiography-mask-image.tif");
@@ -45,8 +51,10 @@ ImageMask=im2double(ImageMask);
 ImageLive=im2double(ImageLive);
 
 ImageDiff = ImageLive - ImageMask;
-%figure
-%imshow(ImageDiff,[]) 
+figure
+imshow(ImageDiff,[]) 
+
+
 % 4 Histogram equalization
 Image = imread(".\Lab1_Images\pollen-lowcontrast.tif");
 Image=im2double(Image);
@@ -58,6 +66,8 @@ min(Image(:))
 max(Image(:))
 %figure
 %imhist(Image)
+
+
 % 5 Image division and shading correction
 ImagePattern = imread(".\Lab1_Images\Shade_pattern.tif");
 ImagePattern=im2double(ImagePattern);
@@ -78,6 +88,7 @@ imageDiffEsti = ImagePattern ./ ImagePatternEsti;
 T = 0.3; %??
 BW =imbinarize(Image,T);
 max(BW(:))
+
 
 % 6 RGB-images and indexing
 I = zeros(400,600,3);
