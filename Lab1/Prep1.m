@@ -76,16 +76,20 @@ BW =imbinarize(Image,T)
 % 6 RGB-images and indexing
 I = zeros(400,600,3);
 %col 
-I(:,225:375,2)=1; % G
-I(:,225:375,1)=1; % R
+pos1 = 255;
+pos2 = 375;
+pos3 = 150;
+pos4 = 250;
+I(:,pos1:pos2,2)=1; % G
+I(:,pos1:pos2,1)=1; % R
 % row
-I(150:250,:,1)=1; % R
-I(150:250,:,2)=1; % G
+I(pos3:250,:,1)=1; % R
+I(pos3:250,:,2)=1; % G
 % blue
-I(1:150,1:225,3)=1; % B
-I(250:400,375:600,3)=1; % B
-I(1:150,375:600,3)=1; % B
-I(250:400,1:225,3)=1; % B
+I(1:pos3,1:pos1,3)=1; % B
+I(pos4:400,pos2:600,3)=1; % B
+I(1:pos3,pos2:600,3)=1; % B
+I(pos4:400,1:pos1,3)=1; % B
 %create a Swedish flag
 figure
 imshow(I)
