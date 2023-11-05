@@ -48,26 +48,34 @@ function GImage = GammaCorrection( OImage, Gamma, Lower, Upper )
 %% Image class handling
 % Make sure that you can handle input images of class uint8, uint16 and double 
 
+Im = imread(OImage);
+Im = im2double(Im);
+
 %% Compute lower and upper gray value boundaries. 
 % Use the parameteers Lower and Upper to find the corresponding gray values
 % for the boundaries
 % Look at the help function for the command quantile
 %
-lowgv = quantile(....,Lower) % Lower-bound gray value
-uppgv = quantile(....,Upper) % Upper-bound gray value
+lowgv = quantile(Im(:),Lower); % Lower-bound gray value
+uppgv = quantile(Im(:),Upper); % Upper-bound gray value
+
+
 
 %% Compute a scaled version GImage of the image, where: 
 % the lower-bound gray value is zero 
 % the upper-bound gray value is one 
 % because 0^Gamma = 0 and 1^Gamma = 1
 %
-GImage = ...
+GImage = (Im - lowgv)/(uppgv-lowgv);
+
+
 
 %% Gamma mapping of the previous result 
 % Make sure that your image is in the range [0,1] before applying gamma
 % correction!
 %
-GImage = ... % apply gamma correction (which is an elementwise operation)
+GImage = GImage.^Gamma; % apply gamma correction (which is an elementwise operation)
+
 
 
 end
