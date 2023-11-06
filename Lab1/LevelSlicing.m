@@ -55,7 +55,7 @@ RGB_Image = im2double(RGB_Image);
 
 IR_Image = imread(IR_Image);
 IR_Image = im2double(IR_Image);
-size(IR_Image)
+
 %% Show the IR image to select a pixel with reference intensity value
 %
 

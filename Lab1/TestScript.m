@@ -9,4 +9,4 @@ clc
 
 
 % Test 1.3
-LevelSlicing('.\Lab1_Images\RGBflower.tif', '.\Lab1_Images\IRflower.tif', 0.10)
+LevelSlicing('.\Lab1_Images\RGBflower.tif', '.\Lab1_Images\IRflower.tif', 0.1)
