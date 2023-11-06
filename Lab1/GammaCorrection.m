@@ -92,19 +92,19 @@ end
 % 'spillway-dark.tif':
 %
 %
+% gamma = 0.6 ungefär
 %
 %
 % 'aerialview-washedout.tif'
 %
-%
+% 
+% gamma = 2.0 ungefär
 %
 %
 % The image ?IntensityRampGamma25.tif? illustrates the effect of an intensity
 % ramp displayed on a monitor with gamma =2.5. 
 % Which value for gamma should you use in your code to correct the image to appear as a linear intensity ramp?
 % (Set Lower=0 and Upper=1)
-% Gamma = ?
-
-
-
-
+% Gamma = 0.4 ungefär
+% use imhist
+%
