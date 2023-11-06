@@ -48,15 +48,14 @@ function [RGB_Range, IR_Select] = LevelSlicing( RGB_Image, IR_Image, LevelRange)
 %
 %% Image size and image class handling
 %
-[nr,nc,nch] = size(RGB_Image); % Number of rows, columns and channels in the image
-
 
 RGB_Image = imread(RGB_Image);
 RGB_Image = im2double(RGB_Image);
+[nr,nc,nch] = size(RGB_Image); % Number of rows, columns and channels in the image
 
 IR_Image = imread(IR_Image);
 IR_Image = im2double(IR_Image);
-
+size(IR_Image)
 %% Show the IR image to select a pixel with reference intensity value
 %
 
@@ -87,9 +86,9 @@ Mask = IR_Image<Higher & IR_Image>Lower %
 % (for all 3 color channels)
 
 %RGB_Range = ... %
-RGB_Range(:,:,1) = RGB_Range(:,:,1).*Mask;
-RGB_Range(:,:,2) = RGB_Range(:,:,2).*Mask;
-RGB_Range(:,:,3) = RGB_Range(:,:,3).*Mask;
+RGB_Range(:,:,1) = RGB_Image(:,:,1).*Mask;
+RGB_Range(:,:,2) = RGB_Image(:,:,2).*Mask;
+RGB_Range(:,:,3) = RGB_Image(:,:,3).*Mask;
     
 %% Show the selected pixel in the IR-image
 % Crete an image that shows the position of the selected pixel in the IR-image, using a red mark.
@@ -104,8 +103,8 @@ IR_Select=cat(3,IR_Image,IR_Image,IR_Image);
 % Now modify IR_select to mark the selected pixel in red!
 
 %IR_Select(...) = ...
-IR_Select(x-5:x+5,y,1) = 1
-IR_Select(x,y-5:y+5,1) = 1
+IR_Select(x-5:x+5,y,1) = 1;
+IR_Select(x,y-5:y+5,1) = 1;
 
 %% Display the result
 % The result is displayed. Use the following names and formats:
