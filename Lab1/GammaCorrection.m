@@ -76,6 +76,7 @@ GImage = (Im - lowgv)/(uppgv-lowgv);
 %
 GImage = GImage.^Gamma; % apply gamma correction (which is an elementwise operation)
 
+imshow(GImage)
 
 
 end
