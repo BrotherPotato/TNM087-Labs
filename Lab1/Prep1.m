@@ -90,8 +90,8 @@ BW=ImagePattern>T
 figure
 imshow(BW)
 imwrite(BW, '.\Saved_Images\BW.tif');
-figure
-imhist(BW)
+%figure
+%imhist(BW)
 max(BW(:))
 whos('BW');
 1048576 / (1024*1024)
