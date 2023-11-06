@@ -79,6 +79,7 @@ GImage = GImage.^Gamma; % apply gamma correction (which is an elementwise operat
 imshow(GImage)
 
 
+
 end
 
 %% Experiments with your code
