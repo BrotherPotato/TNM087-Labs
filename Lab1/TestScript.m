@@ -8,10 +8,10 @@ clc
 %GammaCorrection('.\Lab1_Images\aerialview-washedout.tif', 2.5, 0, 1)
 
 %figure(3)
-%imhist(GammaCorrection('.\Lab1_Images\aerialview-washedout.tif', 2.0, 0, 1))
+%GammaCorrection('.\Lab1_Images\aerialview-washedout.tif', 2.9, 0.01, 0.80)
 
 %figure(4)
-%GammaCorrection('.\Lab1_Images\spillway-dark.tif', 0.6, 0, 1)
+%GammaCorrection('.\Lab1_Images\spillway-dark.tif', 0.6, 0.01, 0.80)
 
 %figure(5)
 %GammaCorrection('.\Lab1_Images\spillway-dark.tif', 0.7, 0, 1)

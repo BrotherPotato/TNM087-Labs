@@ -49,12 +49,12 @@ function [RGB_Range, IR_Select] = LevelSlicing( RGB_Image, IR_Image, LevelRange)
 %% Image size and image class handling
 %
 
-RGB_Image = imread(RGB_Image);
-RGB_Image = im2double(RGB_Image);
+RGB_Image = imread(RGB_Image); % reads rgb image
+RGB_Image = im2double(RGB_Image); % converts to double
 [nr,nc,nch] = size(RGB_Image); % Number of rows, columns and channels in the image
 
-IR_Image = imread(IR_Image);
-IR_Image = im2double(IR_Image);
+IR_Image = imread(IR_Image); % reads ir image
+IR_Image = im2double(IR_Image); % converts to double
 
 %% Show the IR image to select a pixel with reference intensity value
 %
@@ -63,8 +63,8 @@ fh1=figure; imshow(IR_Image);
 set(fh1,'NumberTitle','off','Name','Select a pixel for reference intensity level')
 [x,y] = ginput(1); % x and y are the coordinates of the reference pixel 
 
-x = round(x);
-y = round(y);
+x = round(x); % rounds each coordinate value to correspond
+y = round(y); % rounds each coordinate value to correspond
 
 % Note that x and y are not the same as row and column! 
 % Refer to the help-section for the function ginput for reference
@@ -80,13 +80,13 @@ Higher = IR_Image(x,y) + LevelRange/2; % The highest intensity value in the sele
 %% Mask out the areas ine th RGB image, based on the selected intensity range in the IR image
 % Compute a mask (binary image) from the IR image, which is ONE only where IR<Higher & IR>Lower
 
-Mask = IR_Image<Higher & IR_Image>Lower %
+Mask = IR_Image<Higher & IR_Image>Lower % given from above, creates a mask for the values between the higher and lower values, the mask has a 1 where this is true
     
 % Use the Mask to mask out the areas within ths selected IR-range in the RGB-images
 % (for all 3 color channels)
 
 %RGB_Range = ... %
-RGB_Range(:,:,1) = RGB_Image(:,:,1).*Mask;
+RGB_Range(:,:,1) = RGB_Image(:,:,1).*Mask; % mult each rgb layer with the mask
 RGB_Range(:,:,2) = RGB_Image(:,:,2).*Mask;
 RGB_Range(:,:,3) = RGB_Image(:,:,3).*Mask;
     
@@ -96,15 +96,19 @@ RGB_Range(:,:,3) = RGB_Image(:,:,3).*Mask;
 % if you use a square. You can also consider marking the pixel with a cross, or some other shape
 %
 
-IR_Select=cat(3,IR_Image,IR_Image,IR_Image);
+IR_Select=cat(3,IR_Image,IR_Image,IR_Image);  % combines the rgb images
 
 % This create an RGB image. Since the color channels are identical, it will
 % be displayed in grayscale. 
 % Now modify IR_select to mark the selected pixel in red!
 
 %IR_Select(...) = ...
-IR_Select(x-5:x+5,y,1) = 1;
+IR_Select(x-5:x+5,y,1) = 1; % a red + where selected
 IR_Select(x,y-5:y+5,1) = 1;
+IR_Select(x-5:x+5,y,2) = 0;
+IR_Select(x,y-5:y+5,2) = 0;
+IR_Select(x-5:x+5,y,3) = 0;
+IR_Select(x,y-5:y+5,3) = 0;
 
 %% Display the result
 % The result is displayed. Use the following names and formats:
