@@ -27,7 +27,7 @@ function GImage = GammaCorrection( OImage, Gamma, Lower, Upper )
 %% Basic version control (in case you need more than one attempt)
 %
 % Version: 1
-% Date: today's date
+% Date: 2023-11-09
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each
@@ -48,8 +48,8 @@ function GImage = GammaCorrection( OImage, Gamma, Lower, Upper )
 %% Image class handling
 % Make sure that you can handle input images of class uint8, uint16 and double 
 
-Im = imread(OImage); % reads a imagefile
-Im = im2double(Im); % converts image to double if needed (if it is a uint8 or uint16)
+
+Im = im2double(OImage); % converts image to double if needed (if it is a uint8 or uint16)
 
 %% Compute lower and upper gray value boundaries. 
 % Use the parameteers Lower and Upper to find the corresponding gray values

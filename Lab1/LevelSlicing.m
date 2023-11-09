@@ -28,7 +28,7 @@ function [RGB_Range, IR_Select] = LevelSlicing( RGB_Image, IR_Image, LevelRange)
 %% Basic version control (in case you need more than one attempt)
 %
 % Version: 1
-% Date: today's date
+% Date: 2023-11-09
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each
@@ -49,12 +49,11 @@ function [RGB_Range, IR_Select] = LevelSlicing( RGB_Image, IR_Image, LevelRange)
 %% Image size and image class handling
 %
 
-RGB_Image = imread(RGB_Image); % reads rgb image
-RGB_Image = im2double(RGB_Image); % converts to double
+ % reads rgb image
+RGB_Image = im2double(RGB_Image); % converts to double if needed
 [nr,nc,nch] = size(RGB_Image); % Number of rows, columns and channels in the image
 
-IR_Image = imread(IR_Image); % reads ir image
-IR_Image = im2double(IR_Image); % converts to double
+IR_Image = im2double(IR_Image); % converts to double if needed
 
 %% Show the IR image to select a pixel with reference intensity value
 %
@@ -63,8 +62,14 @@ fh1=figure; imshow(IR_Image);
 set(fh1,'NumberTitle','off','Name','Select a pixel for reference intensity level')
 [x,y] = ginput(1); % x and y are the coordinates of the reference pixel 
 
-x = round(x); % rounds each coordinate value to correspond
-y = round(y); % rounds each coordinate value to correspond
+%x = round(x); % rounds each coordinate value to correspond
+%y = round(y); % rounds each coordinate value to correspond
+
+% rounds each coordinate value to correspond
+% if a point outside the image bounds is selected, the closest possible
+% point is used
+x = min(max(round(x),1),nc);
+y = min(max(round(y),1),nr);
 
 % Note that x and y are not the same as row and column! 
 % Refer to the help-section for the function ginput for reference
@@ -74,13 +79,14 @@ y = round(y); % rounds each coordinate value to correspond
 % find the selected intensity level. Then compute the selected intensity range,
 % based on the vaiable LevelRange
 
-Lower = IR_Image(x,y) - LevelRange/2; % The lowest intensity value in the selected range
-Higher = IR_Image(x,y) + LevelRange/2; % The highest intensity value in the selected range
-    
+Lower = IR_Image(y,x) - LevelRange/2; % The lowest intensity value in the selected range
+Higher = IR_Image(y,x) + LevelRange/2; % The highest intensity value in the selected range
+
+
 %% Mask out the areas ine th RGB image, based on the selected intensity range in the IR image
 % Compute a mask (binary image) from the IR image, which is ONE only where IR<Higher & IR>Lower
 
-Mask = IR_Image<Higher & IR_Image>Lower % given from above, creates a mask for the values between the higher and lower values, the mask has a 1 where this is true
+Mask = IR_Image<Higher & IR_Image>Lower; % given from above, creates a mask for the values between the higher and lower values, the mask has a 1 where this is true
     
 % Use the Mask to mask out the areas within ths selected IR-range in the RGB-images
 % (for all 3 color channels)
@@ -102,13 +108,19 @@ IR_Select=cat(3,IR_Image,IR_Image,IR_Image);  % combines the rgb images
 % be displayed in grayscale. 
 % Now modify IR_select to mark the selected pixel in red!
 
-%IR_Select(...) = ...
-IR_Select(x-5:x+5,y,1) = 1; % a red + where selected
-IR_Select(x,y-5:y+5,1) = 1;
-IR_Select(x-5:x+5,y,2) = 0;
-IR_Select(x,y-5:y+5,2) = 0;
-IR_Select(x-5:x+5,y,3) = 0;
-IR_Select(x,y-5:y+5,3) = 0;
+% makes sure the red cross is only rendered for the points inside the
+% bounds of the image
+leftBound = max(y-5, 1);
+rightBound = min(y+5, nr);
+topBound = max(x-5, 1);
+bottomBound = min(x+5, nc);
+% creates a red cross on the user selected point
+IR_Select(leftBound:rightBound,x,1) = 1; % red
+IR_Select(y,topBound:bottomBound,1) = 1;
+IR_Select(leftBound:rightBound,x,2) = 0; % removes green
+IR_Select(y,topBound:bottomBound,2) = 0;
+IR_Select(leftBound:rightBound,x,3) = 0; % removes blue
+IR_Select(y,topBound:bottomBound,3) = 0;
 
 %% Display the result
 % The result is displayed. Use the following names and formats:
