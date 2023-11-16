@@ -1,4 +1,14 @@
 clear
 clc
-Image = imread(".\Lab1_Images\book-cover.tif");
-ImageMask=im2double(ImageMask);
+Image = imread(".\Lab2_Images\TestPattern.tif");
+Image=im2double(Image);
+boxKernerl9 = ones(9)/9^2;
+ImageP1 = conv2(Image, boxKernerl9);
+figure(1)
+imshow(ImageP1) 
+imwrite(ImageP1, ".\Lab2_SavedImages\P1.tif")
+boxKernerl21 = ones(21)/21^2;
+ImageP2 = conv2(Image, boxKernerl21);
+figure(2)
+imshow(ImageP2) 
+imwrite(ImageP1, ".\Lab2_SavedImages\P2.tif")
