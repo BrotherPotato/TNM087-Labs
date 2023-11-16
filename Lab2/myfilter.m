@@ -14,7 +14,7 @@ function [olp, ohp, obr, obp, oum, ohb]=myfilter(im, lp1, lp2)
 %
 %% Who has done it
 %
-% Authors: Same LiU-IDs/names, as in the Lisam submission
+% Authors: Magnus Kling LiU-ID: magkl572, Max Wiklundh LiU-ID: maxwi824
 % You can work in groups of max 2 students
 %
 %% Syntax of the function
@@ -70,54 +70,82 @@ function [olp, ohp, obr, obp, oum, ohb]=myfilter(im, lp1, lp2)
 % Perform the lowpass filtering here:
 %
 
-olp = ... % The lowpass filtered image
+olp = imfilter(im, lp1, "symmetric"); % The lowpass filtered image
 
 %% Highpass filtering
 % Construct a highpass filter kernel from lp1, call it hp1, here:
 
-hp1= ... % the highpass filter kernel
+[M, N] = size(lp1);
+impulse = zeros(M,N);
+impulse(floor(M/2)+1, floor(N/2)+1) = 1;
+
+hp1= impulse - lp1; % the highpass filter kernel
 
 % Filter the input image by hp1, to find the result of highpass filtering
 % the input image, here:
 
-ohp = ... % the highpass filtered image
+ohp = imfilter(im, hp1, "symmetric"); % the highpass filtered image
 
 %% Bandreject filtering
 % Construct a bandreject filter kernel from lp1 and lp2, call it br1, 
 % IMPORTANT: lp2 has a lower cut-off frequency than lp1
 % here:
 
-br1 = ... % the bandreject filter kernel
+% lp2 ska va större
+if (size(lp1) > size(lp2))
+    temp = lp2;
+    lp2 = lp1;
+    lp1 = temp;
+    clear temp;
+end
 
+[x1, y1] = size(lp1);
+[x2, y2] = size(lp2);
+% padarray med skillnaden i storlek i båda riktningarna
+padLp1 = padarray(lp1, [(x2-x1)/2, (y2-y1)/2], 0, 'both');
+sizeLP2 = size(lp2);
+bpImpuls = zeros(sizeLP2); % d = size(X)   returns  d = [2 3 4]
+bpImpuls(floor(sizeLP2(1)/2)+1, floor(sizeLP2(2)/2)+1) = 1;
+
+% lpl + (impuls - lph)
+br1 = padLp1 + (bpImpuls - lp2); % the bandreject filter kernel
 
 % Filter the input image by br1, to find the result of bandreject filtering
 % the input image, here:
 
-obr = ... % the bandreject filtered image
+
+obr = imfilter(im, hp1, "symmetric"); % the bandreject filtered image
 
 %% Bandpass filtering
 % Construct a bandpass filter kernel from br1, call it bp1, here:
 
-bp1 = ... % the bandpass filter kernel
+%impulse - br1
+bp1 = bpImpuls - br1; % the bandpass filter kernel
 
 
 % Filter the input image by bp1, to find the result of bandpass filtering
 % the input image, here:
 
-obp = ... % the bandpass filtered image
+obp = imfilter(im, bp1, "symmetric"); % the bandpass filtered image
 
 
 %% Unsharp masking
 % Perform unsharp masking using lp2, here:
 
-oum = ... % the resulting image after unsharp masking
+% The typical blending formula for unsharp masking is sharpened = original + (original − blurred) × amount.
+blurred = imfilter(im, lp2, "symmetric");
+mask = im - blurred;
+oum = im + mask; % the resulting image after unsharp masking
 
 
 %% Highboost filtering
 % Perform highboost filtering using lp2 (use k=2.5), here:
 
+% The typical blending formula for unsharp masking is sharpened = original + (original − blurred) × amount.
+% amount = k
+k = 2.5;
 
-ohb = ... % the resulting image after highboost filtering
+ohb = im + mask*k; % the resulting image after highboost filtering
 
 
 %% Test your code

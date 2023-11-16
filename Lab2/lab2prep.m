@@ -34,10 +34,9 @@ Image5 = Image4 + Image;
 figure(5)
 imshow(Image5)
 imwrite(Image5, ".\Lab2_SavedImages\Image5.tif")
-% 2
+% P9
 Sobx = [-1 -2 -1; 0 0 0; 1 2 1];
 Soby = [-1 0 1; -2 0 2; -1 0 1];
-% P9
 Image6 = filter2(Sobx, Image);
 figure(6)
 imshow(Image6)
@@ -52,3 +51,28 @@ Image8 = sqrt(Image6.^2 + Image7.^2);
 figure(8)
 imshow(Image8)
 imwrite(Image8, ".\Lab2_SavedImages\Image8.tif")
+%%
+% 2
+clear
+zoneImage = imread(".\Lab2_Images\zoneplate.tif");
+zoneImage=im2double(zoneImage);
+figure(9)
+imshow(zoneImage);
+box21 = ones(21)/(21^2);
+box9 = ones(9)/(9^2);
+[olp, ohp, obr, obp, oum, ohb] = myfilter(zoneImage, box21, box9);
+figure(10)
+imshow(olp)
+figure(11)
+imshow(ohp)
+figure(12)
+imshow(obr)
+figure(13)
+imshow(obp)
+figure(14)
+imshow(oum)
+figure(15)
+imshow(ohb)
+
+%%
+% 3
