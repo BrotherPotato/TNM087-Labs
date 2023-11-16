@@ -23,6 +23,7 @@ imwrite(Image3, ".\Lab2_SavedImages\Image3.tif")
 impulse21 = zeros(21);
 impulse21(11,11) = 1;
 highPass21 = impulse21 - boxKernerl21;
+mean2(highPass21)
 mean(highPass21(:))
 Image4 = imfilter(Image, highPass21, "replicate");
 figure(4)
