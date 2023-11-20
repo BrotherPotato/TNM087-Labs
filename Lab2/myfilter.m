@@ -100,7 +100,7 @@ ohp = imfilter(im, hp1, "symmetric"); % the highpass filtered image
 % here:
 
 % lp2 ska va större
-if (size(lp1) > size(lp2))
+if (size(lp1) > size(lp2)) %checking if lp1 has higher cutoff than lp2
     %manual swap function
     temp = lp2;
     lp2 = lp1;
@@ -115,6 +115,7 @@ end
 % padarray med skillnaden i storlek i båda riktningarna
 padLp1 = padarray(lp1, [(x2-x1)/2, (y2-y1)/2], 0, 'both');
 sizeLP2 = size(lp2);
+
 bpImpuls = zeros(sizeLP2); % d = size(X)   returns  d = [2 3 4]
 bpImpuls(floor(sizeLP2(1)/2)+1, floor(sizeLP2(2)/2)+1) = 1;
 
@@ -163,8 +164,8 @@ ohb = im + mask*k; % the resulting image after highboost filtering
 %% Test your code
 % Test your code on different images using different lowpass filters as 
 % input arguments. Specially, it is interesting to test your code on the 
-% image called zonplate.tif. This image contains different frequencies and 
-% it is interesting to study how different filters pass some frequencies 
+% image called zonplate.tif. Magnus och Max, This image contains different 
+% frequencies and  it is interesting to study how different filters pass some frequencies 
 % and block others. As the filter kernels, it is interesting to
 % try different box and Gaussian filters.
 %
