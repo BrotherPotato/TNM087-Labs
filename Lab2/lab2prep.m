@@ -76,3 +76,26 @@ imshow(ohb)
 
 %%
 % 3
+clear
+clc
+%close all
+figure(16)
+sexe = imread(".\Lab2_Images\test1.tif");
+sexe = im2double(sexe);
+imshow(eliminateobjects(sexe, 2))
+
+figure(17)
+sexe1 = imread(".\Lab2_Images\test2.tif");
+sexe1 = im2double(sexe1);
+imshow(eliminateobjects(sexe1, 6))
+
+figure(18)
+sexe2 = imread(".\Lab2_Images\test3.tif");
+sexe2 = im2double(sexe2);
+imshow(eliminateobjects(sexe2, 19))
+
+figure(19)
+sexe3 = imread(".\Lab2_Images\test4.tif");
+sexe3 = im2double(sexe3);
+imshow(eliminateobjects(sexe3, 2));
+eliminateobjects(sexe3, 2)

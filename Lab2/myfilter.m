@@ -43,7 +43,7 @@ function [olp, ohp, obr, obp, oum, ohb]=myfilter(im, lp1, lp2)
 %% Basic version control (in case you need more than one attempt)
 %
 % Version: 1
-% Date: today's date
+% Date: 23-11-20
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each
@@ -70,20 +70,28 @@ function [olp, ohp, obr, obp, oum, ohb]=myfilter(im, lp1, lp2)
 % Perform the lowpass filtering here:
 %
 
+%filtering im with lowpass 1 using symmetric padding
 olp = imfilter(im, lp1, "symmetric"); % The lowpass filtered image
 
 %% Highpass filtering
 % Construct a highpass filter kernel from lp1, call it hp1, here:
 
+%getting size of lowpass filter 1
 [M, N] = size(lp1);
+
+%making impulse with the same size as lp1
 impulse = zeros(M,N);
+
+%changing the centerpoint to 1 according to the formula :)
 impulse(floor(M/2)+1, floor(N/2)+1) = 1;
 
+% highpass filter = 1 - lowpass filter
 hp1= impulse - lp1; % the highpass filter kernel
 
 % Filter the input image by hp1, to find the result of highpass filtering
 % the input image, here:
 
+%filtering im with highpass 1 using symmetric padding
 ohp = imfilter(im, hp1, "symmetric"); % the highpass filtered image
 
 %% Bandreject filtering
@@ -93,12 +101,15 @@ ohp = imfilter(im, hp1, "symmetric"); % the highpass filtered image
 
 % lp2 ska va större
 if (size(lp1) > size(lp2))
+    %manual swap function
     temp = lp2;
     lp2 = lp1;
     lp1 = temp;
+    %clearing temp var to save memory
     clear temp;
 end
 
+%getting lp1 and lp2 size
 [x1, y1] = size(lp1);
 [x2, y2] = size(lp2);
 % padarray med skillnaden i storlek i båda riktningarna
@@ -108,11 +119,11 @@ bpImpuls = zeros(sizeLP2); % d = size(X)   returns  d = [2 3 4]
 bpImpuls(floor(sizeLP2(1)/2)+1, floor(sizeLP2(2)/2)+1) = 1;
 
 % lpl + (impuls - lph)
+%Bandreject according to formula
 br1 = padLp1 + (bpImpuls - lp2); % the bandreject filter kernel
 
 % Filter the input image by br1, to find the result of bandreject filtering
 % the input image, here:
-
 
 obr = imfilter(im, hp1, "symmetric"); % the bandreject filtered image
 
@@ -145,6 +156,7 @@ oum = im + mask; % the resulting image after unsharp masking
 % amount = k
 k = 2.5;
 
+%highboost according to formula
 ohb = im + mask*k; % the resulting image after highboost filtering
 
 

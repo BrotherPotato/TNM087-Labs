@@ -38,7 +38,7 @@ function output=eliminateobjects(im, q)
 %% Basic version control (in case you need more than one attempt)
 %
 % Version: 1
-% Date: today's date
+% Date: 23-11-20
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each
@@ -56,7 +56,7 @@ function output=eliminateobjects(im, q)
 % 4) Often you must do something else between the given commands in the
 %       template
 %
-%% Here starts your code. 
+%% Here starts your code.
 % Write the appropriate MATLAB commands right after each comment below.
 %
 %
@@ -65,31 +65,39 @@ Q=0.8; %The average intensity of the objects
 B=0.1; %The background pixel intensity
 %
 % we want to reduce the average intensity of the objects smaller than q x q
-% to Q/4. Write the equation to calculate the size of the box filter (n xn) 
+% to Q/4. Write the equation to calculate the size of the box filter (n xn)
 % based on B and Q.
 % The equation here:
 
-n_formula = ... % The size of the required filter
-    
+n_formula = q * sqrt(4*(Q-B)/(Q-4*B)); % The size of the required filter
+
 %% Find the smallest (odd) size of the filter here:
 
+%round to lowest integer
+n = floor(n_formula); % the smallest odd size of the filter
 
-n = ... % the smallest odd size of the filter
+if(mod(n,2) == 0)
+    n = n + 1; % if even add 1  i.e 16.82 -> 17
+else
+    n = n + 2; % odd add 2  i.e 15.82 -> 17
+end
 
 %% Construct the box kernel here:
 
-fbox = ... % the box filter kernel
+% making box kernal n x n size
+fbox = ones(n)/(n^2); % the box filter kernel
 
 
 %% Apply the box filter kernel to the image here:
 
-im_filt = ... % the filtered image
+% I/O filter is the same size. Symmetric padding 
+im_filt = imfilter(im, fbox, "symmetric", "same"); % the filtered image
 
 
 %% Threshold the filtered image
 % If you have done everything correctly so far, the background and all
 % objects smaller than q x q will hold pixel values smaller than Q/4.
-% Use an appropriate threshold value (what is an appropriate threshold value?) 
+% Use an appropriate threshold value (what is an appropriate threshold value?)
 % to threshold the filtered image. Call the resulting image
 % after thresholding o_thresh. In this image, the background and all objects
 % smaller than q×q are supposed to be black (0) and larger objects and
@@ -98,17 +106,17 @@ im_filt = ... % the filtered image
 % Threshold the filtered result here:
 
 
-o_thresh = ... % The result of thresholding the filtered image
+o_thresh = im_filt >= Q/4; % The result of thresholding the filtered image
 
 %% Create the output image
-% Use the thresholded image (o_thresh) as a mask to create the output image. 
+% Use the thresholded image (o_thresh) as a mask to create the output image.
 % In the result (output), objects smaller than q×q are supposed to be eliminated.
 % This means that, at those pixels o_thresh is equal to 1, the output image
 % (output) has to be equal to the input image (im). At those pixels o_thresh is equal to 0,
 % the output image (output) has to be equal to the intensity value of the background (B).
 %
-% HINT: Let us give an example. Assume that you have created a mask, holding 
-% logical values 0 or 1. Assume that you want OUT to be equal to the image IN1, 
+% HINT: Let us give an example. Assume that you have created a mask, holding
+% logical values 0 or 1. Assume that you want OUT to be equal to the image IN1,
 % where mask is 1, and equal to IN2 where mask is 0. This can be done by
 % the following command:
 %
@@ -116,19 +124,22 @@ o_thresh = ... % The result of thresholding the filtered image
 %
 % Create the output image here:
 
-
-output = ... % the output image
+%Where the mask is 1 (white) take value from im otherwise from B where the mask is 0
+%(black)
+output = o_thresh.* im + (~o_thresh.*B); % the output image
 
 
 
 %% Test your code
-% Test your code on at least four different input images, as specified 
+% Test your code on at least four different input images, as specified
 % in the document for Lab2 (Task 3).
 %
 %
 %% Answer this question:
-% Why couldn't your code eliminate one of the 2x2 objects in test4 when q=2? 
+% Why couldn't your code eliminate one of the 2x2 objects in test4 when q=2?
 % Your answer here:
-%
+% The 2x2 next to the 6x6 still exist because the distance is smaller than
+% fbox size. fbox is 7x7 when q = 2, meaning during the matrix mulitplication
+% the mask includes values from the 6x6.
 %
 %
