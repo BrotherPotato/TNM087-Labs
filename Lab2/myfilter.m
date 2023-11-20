@@ -114,10 +114,10 @@ end
 [x2, y2] = size(lp2);
 % padarray med skillnaden i storlek i båda riktningarna
 padLp1 = padarray(lp1, [(x2-x1)/2, (y2-y1)/2], 0, 'both');
-sizeLP2 = size(lp2);
+sizeLP2 = size(lp2); % d = size(X)   returns  d = [2 3 4]
 
-bpImpuls = zeros(sizeLP2); % d = size(X)   returns  d = [2 3 4]
-bpImpuls(floor(sizeLP2(1)/2)+1, floor(sizeLP2(2)/2)+1) = 1;
+bpImpuls = zeros(sizeLP2); % creates a matrix with all zeroes with the same size as lp2
+bpImpuls(floor(sizeLP2(1)/2)+1, floor(sizeLP2(2)/2)+1) = 1; % we change the middle value to create a impuls matrix
 
 % lpl + (impuls - lph)
 %Bandreject according to formula
@@ -126,7 +126,8 @@ br1 = padLp1 + (bpImpuls - lp2); % the bandreject filter kernel
 % Filter the input image by br1, to find the result of bandreject filtering
 % the input image, here:
 
-obr = imfilter(im, hp1, "symmetric"); % the bandreject filtered image
+%obr = imfilter(im, hp1, "symmetric"); 
+obr = imfilter(im, br1, "symmetric"); % the bandreject filtered image
 
 %% Bandpass filtering
 % Construct a bandpass filter kernel from br1, call it bp1, here:

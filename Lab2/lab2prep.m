@@ -24,7 +24,8 @@ impulse21 = zeros(21);
 impulse21(11,11) = 1;
 highPass21 = impulse21 - boxKernerl21;
 mean2(highPass21)
-mean(highPass21(:))
+s = mean(highPass21(:))
+sum(highPass21(:))
 Image4 = imfilter(Image, highPass21, "replicate");
 figure(4)
 imshow(Image4)
@@ -56,23 +57,23 @@ imwrite(Image8, ".\Lab2_SavedImages\Image8.tif")
 clear
 zoneImage = imread(".\Lab2_Images\zoneplate.tif");
 zoneImage=im2double(zoneImage);
-figure(9)
-imshow(zoneImage);
+%figure(9)
+%imshow(zoneImage);
 box21 = ones(21)/(21^2);
 box9 = ones(9)/(9^2);
-[olp, ohp, obr, obp, oum, ohb] = myfilter(zoneImage, box21, box9);
+[olp, ohp, obr, obp, oum, ohb] = myfilter(zoneImage, box9, box21);
 figure(10)
 imshow(olp)
 figure(11)
 imshow(ohp)
 figure(12)
 imshow(obr)
-figure(13)
-imshow(obp)
-figure(14)
-imshow(oum)
-figure(15)
-imshow(ohb)
+%figure(13)
+%imshow(obp)
+%figure(14)
+%imshow(oum)
+%figure(15)
+%imshow(ohb)
 
 %%
 % 3
