@@ -68,12 +68,12 @@ figure(11)
 imshow(ohp)
 figure(12)
 imshow(obr)
-%figure(13)
-%imshow(obp)
-%figure(14)
-%imshow(oum)
-%figure(15)
-%imshow(ohb)
+figure(13)
+imshow(obp)
+figure(14)
+imshow(oum)
+figure(15)
+imshow(ohb)
 
 %%
 % 3

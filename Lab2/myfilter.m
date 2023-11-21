@@ -42,8 +42,8 @@ function [olp, ohp, obr, obp, oum, ohb]=myfilter(im, lp1, lp2)
 %
 %% Basic version control (in case you need more than one attempt)
 %
-% Version: 1
-% Date: 23-11-20
+% Version: 2
+% Date: 23-11-21
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each
@@ -99,29 +99,17 @@ ohp = imfilter(im, hp1, "symmetric"); % the highpass filtered image
 % IMPORTANT: lp2 has a lower cut-off frequency than lp1
 % here:
 
-% lp2 ska va större
-if (size(lp1) > size(lp2)) %checking if lp1 has higher cutoff than lp2
-    %manual swap function
-    temp = lp2;
-    lp2 = lp1;
-    lp1 = temp;
-    %clearing temp var to save memory
-    clear temp;
-end
+% assume lp2 larger size since it has a lower cut-off freq
+% br = lpl + hp1 gives
 
 %getting lp1 and lp2 size
-[x1, y1] = size(lp1);
+[x1, y1] = size(hp1);
 [x2, y2] = size(lp2);
 % padarray med skillnaden i storlek i båda riktningarna
-padLp1 = padarray(lp1, [(x2-x1)/2, (y2-y1)/2], 0, 'both');
-sizeLP2 = size(lp2); % d = size(X)   returns  d = [2 3 4]
+padHp1 = padarray(hp1, [(x2-x1)/2, (y2-y1)/2], 0, 'both');
 
-bpImpuls = zeros(sizeLP2); % creates a matrix with all zeroes with the same size as lp2
-bpImpuls(floor(sizeLP2(1)/2)+1, floor(sizeLP2(2)/2)+1) = 1; % we change the middle value to create a impuls matrix
-
-% lpl + (impuls - lph)
-%Bandreject according to formula
-br1 = lp2 + (bpImpuls - padLp1); % the bandreject filter kernel
+%Bandreject according to formula br = lp2 + hp1
+br1 = lp2 + padHp1; % the bandreject filter kernel
 
 % Filter the input image by br1, to find the result of bandreject filtering
 % the input image, here:
@@ -131,6 +119,10 @@ obr = imfilter(im, br1, "symmetric"); % the bandreject filtered image
 
 %% Bandpass filtering
 % Construct a bandpass filter kernel from br1, call it bp1, here:
+
+sizeLP2 = size(lp2); % d = size(X)   returns  d = [2 3 4]
+bpImpuls = zeros(sizeLP2); % creates a matrix with all zeroes with the same size as lp2
+bpImpuls(floor(sizeLP2(1)/2)+1, floor(sizeLP2(2)/2)+1) = 1; % we change the middle value to create a impuls matrix
 
 %impulse - br1
 bp1 = bpImpuls - br1; % the bandpass filter kernel
