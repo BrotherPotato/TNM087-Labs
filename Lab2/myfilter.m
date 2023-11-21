@@ -121,7 +121,7 @@ bpImpuls(floor(sizeLP2(1)/2)+1, floor(sizeLP2(2)/2)+1) = 1; % we change the midd
 
 % lpl + (impuls - lph)
 %Bandreject according to formula
-br1 = padLp1 + (bpImpuls - lp2); % the bandreject filter kernel
+br1 = lp2 + (bpImpuls - padLp1); % the bandreject filter kernel
 
 % Filter the input image by br1, to find the result of bandreject filtering
 % the input image, here:
