@@ -11,9 +11,8 @@ function [olp, ohp]=FilterFreq(f, D0)
 %
 %% Who has done it
 %
-% Author: Same LiU-ID and name as in the Lisam submission
-% Co-author: You can work in groups of max 2, this is the LiU-ID/name of
-% the other member of the group
+% Author: Magnus Kling LiU-ID: magkl572 
+% Co-author: Max Wiklundh LiU-ID: maxwi824
 %
 %% Syntax of the function
 %      Input arguments:
@@ -57,7 +56,9 @@ function [olp, ohp]=FilterFreq(f, D0)
 % The input image is zero padded to an image of size P x Q, where P = 2M and
 % Q = 2N (M x N is the size of the input image). Notice that the input
 % image has to be placed at the top-left corner of the zero-padded image.
-
+[M, N] = size(f);
+P = 2*M;
+Q = 2*N;
 fp= ... % the zero padded image
     
 %% construct the Gaussian lowpass filter transfer function

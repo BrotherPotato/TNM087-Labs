@@ -11,9 +11,8 @@ function out=RemoveSinusoidalNoise(in,D0)
 %
 %% Who has done it
 %
-% Author: Same LiU-ID and name as in the Lisam submission
-% Co-author: You can work in groups of max 2, this is the LiU-ID/name of
-% the other member of the group
+% Author: Magnus Kling LiU-ID: magkl572 
+% Co-author: Max Wiklundh LiU-ID: maxwi824
 %
 %% Syntax of the function
 %      Input arguments:
