@@ -59,8 +59,11 @@ function [olp, ohp]=FilterFreq(f, D0)
 [M, N] = size(f);
 P = 2*M;
 Q = 2*N;
-fp= ... % the zero padded image
-    
+fp= zeros(P,Q); % the zero padded image
+
+% Insert the image in the zero padded matrix 
+fp(1:M,1:N) = f;
+
 %% construct the Gaussian lowpass filter transfer function
 % If you want, you can write a separate function to construct the Gaussian filter.
 % If you do so, don't forget to submit that MATLAB function as well.
@@ -70,32 +73,43 @@ fp= ... % the zero padded image
 % The cutoff frequency of this filter, D0, is the second input argument of
 % this MATLAB function
 
-GLPF= ... % the Gaussian lowpass filter transfer function
+% Fö5_6 slide 108
+[X, Y] = meshgrid(0:P-1, 0:Q-1);
+X = X';
+Y = Y';
+D = sqrt((X-P/2).^2+(Y-Q/2).^2);
+% Fö5_6 slide 104
+GLPF= exp(-(D.^2)/(2*D0.^2)); % the Gaussian lowpass filter transfer function
     
 %% Perform filtering in the frequency domain
 % Find the product between the filter transfer function and the Fourier
 % transform of the padded image (Notice that the zero frequency is supposed
 % to be shifted to the center of the Fourier transform)
 
-OLP= ... % The Fourier transform of the lowpass filtered image
+%Fourier transform of the padded image
+FTPI = fftshift(fft2(fp));
+
+OLP= GLPF.*FTPI; % The Fourier transform of the lowpass filtered image
     
 %% Find the padded lowpass filtered image
 % The zero frequency of OLP should be shifted back to the top left corner of the
 % image followed by the inverse Fourier transform. Take the real part of
 % the result.
 
-olpf= ... % The padded lowpass filtered image of size P x Q
+% shifted back -> inverse -> real part
+olpf= real(ifft2(ifftshift(OLP))); % The padded lowpass filtered image of size P x Q
     
 %% Find the lowpass filtered image
 % Extract the final lowpass filtered image from the padded lowpass filtered
 % image
 
-olp= ... % The final lowpass filtered image
+% get part with the image
+olp= olpf(1:M, 1:N); % The final lowpass filtered image
     
 %% Find the final highpass filtered image
 % Read the document for this task
 
-ohp= ... % The final highpass filtered image
+ohp= f - olp; % The final highpass filtered image
     
 %% Test your code
 %
