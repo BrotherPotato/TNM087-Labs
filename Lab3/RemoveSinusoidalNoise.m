@@ -65,7 +65,7 @@ F2=abs(F); % The spectrum/magnitude of F
 [P,Q] = size(in);
 midRow = floor(P/2)+1;
 midCol = floor(Q/2)+1;
-% Set the pixel values at the center and a neighborhood around it in F2 to a small number (for example 0)
+% Set the pixel values at the center and a neighborhood around it in F2 to a small number (for example 0) 5x5
 F2(midRow-2:midRow+2, midCol-2:midCol+2) = 0;
 % Find the position of one of the dominant peaks.
 [~, index] = max(F2(:));

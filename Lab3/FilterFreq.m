@@ -88,7 +88,7 @@ GLPF= exp(-(D.^2)/(2*D0.^2)); % the Gaussian lowpass filter transfer function
 % transform of the padded image (Notice that the zero frequency is supposed
 % to be shifted to the center of the Fourier transform)
 
-%Fourier transform of the padded image (& sifted)
+%Fourier transform of the padded image (& shifted)
 FTPI = fftshift(fft2(fp));
 
 OLP= GLPF.*FTPI; % The Fourier transform of the lowpass filtered image
