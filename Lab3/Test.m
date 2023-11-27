@@ -133,3 +133,48 @@ figure(11)
 imshow(E2_E1)
 imwrite(E2_E1, ".\Lab3_savedImages\E2_E1.tif")
 
+%%
+clear;
+clf
+close all
+ein1 = im2double(imread(".\Lab3_Images\Einstein_sinus_1.tif"));
+ein2 = im2double(imread(".\Lab3_Images\Einstein_sinus_2.tif"));
+einOdd = im2double(imread(".\Lab3_Images\Einstein_odd_sinus.tif"));
+aus = im2double(imread("Lab3_Images\astronaut-interference.tif"));
+
+
+%%
+RemoveSinusoidalNoise(aus, 1);
+%%
+close all
+RemoveSinusoidalNoise(ein1, 15);
+%%
+RemoveSinusoidalNoise(RemoveSinusoidalNoise(ein2, 1), 1);
+%%
+RemoveSinusoidalNoise(einOdd, 1);
+%%
+RemoveSinusoidalNoise(ein1, 5);
+%%
+clear
+clf
+close all
+ein1 = im2double(imread("Lab3_Images\Einstein1.jpg"));
+ein2 = im2double(imread("Lab3_Images\Einstein2.jpg"));
+cTP = im2double(imread("Lab3_Images\characterTestPattern.tif"));
+
+%%
+
+[lp, hp] = FilterFreq(ein1, 90);
+figure
+imshow(lp);
+figure 
+imshow(hp);
+%%
+
+FilterFreq(ein2, 1);
+%%
+
+FilterFreq(cTP, 1);
+
+
+
