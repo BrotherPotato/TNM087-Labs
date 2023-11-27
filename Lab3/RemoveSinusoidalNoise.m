@@ -29,7 +29,7 @@ function out=RemoveSinusoidalNoise(in,D0)
 %% Basic version control (in case you need more than one attempt)
 %
 % Version: 1
-% Date: today
+% Date: 27-11-2023
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each
@@ -60,16 +60,16 @@ F=fftshift(fft2(in)); % the Fourier transform of the image followed by fftshift
 
 F2=abs(F); % The spectrum/magnitude of F
     
-% Set the pixel values at the center and a neighborhood around it in F2 to a small number (for example 0)
-% and find the position of one of the dominant peaks.
+
+% find the middle row and col
 [P,Q] = size(in);
 midRow = floor(P/2)+1;
 midCol = floor(Q/2)+1;
-
+% Set the pixel values at the center and a neighborhood around it in F2 to a small number (for example 0)
 F2(midRow-2:midRow+2, midCol-2:midCol+2) = 0;
-
+% Find the position of one of the dominant peaks.
 [~, index] = max(F2(:));
-
+% Convert the index value for the dominant peak to row, col values
 [row, col] = ind2sub(size(F2),index);
 
 r=row; % the row number of one the two dominant peaks
@@ -85,6 +85,7 @@ c=col; % the column number of the same peak as above
 % and vk are
 %
 
+% calculate the positions relative to the center
 uk= r - midRow; % uk and vk are the positions of the peaks relative the center of the spectrum
 vk= c - midCol; %
     
@@ -103,7 +104,7 @@ n=2; % as specified in the task, the order should be 2
 [X, Y] = meshgrid(0:P-1, 0:Q-1);
 X = X';
 Y = Y';
-floorP = floor(P/2);
+floorP = floor(P/2); % use floor since P and Q could be odd
 floorQ = floor(Q/2);
 Dk = sqrt((X-floorP-uk).^2+(Y-floorQ-vk).^2);
 D_k = sqrt((X-floorP+uk).^2+(Y-floorQ+vk).^2);
@@ -117,8 +118,9 @@ H = (1./(1+(D0./Dk).^n)).*(1./(1+(D0./D_k).^n));  % The filter transfer function
 
 
 
-out= F.*H; % the final output image, where the most dominant sinusoidal noise is eliminated
-out = real(ifft2(ifftshift(out)));
+out= F.*H; % apply the filter
+% get the real part of the spatial domain 
+out = real(ifft2(ifftshift(out)));  % the final output image, where the most dominant sinusoidal noise is eliminated
  
 figure(8)
 imshow(in)
@@ -130,6 +132,7 @@ imshow(out)
 %
 %% Answer this question:
 % For image Einstein_sinus_1, What is the smallest D0 that removes the sinusoidal noise almost completely?
+% 
 % we found that D0 = 15 removes all the sinusoidal noise even when you zoom into the
 % most effected areas, but we can see compression artifacts on his left
 % shoulder. D0 = 10 also works, but if you are okay with very little sinusoidal noise.

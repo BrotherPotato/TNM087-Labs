@@ -31,7 +31,7 @@ function [olp, ohp]=FilterFreq(f, D0)
 %% Basic version control (in case you need more than one attempt)
 %
 % Version: 1
-% Date: today
+% Date: 27-11-2023
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each
@@ -56,6 +56,8 @@ function [olp, ohp]=FilterFreq(f, D0)
 % The input image is zero padded to an image of size P x Q, where P = 2M and
 % Q = 2N (M x N is the size of the input image). Notice that the input
 % image has to be placed at the top-left corner of the zero-padded image.
+
+% Get the image size and create a matrix of double the size with zeros
 [M, N] = size(f);
 P = 2*M;
 Q = 2*N;
@@ -86,7 +88,7 @@ GLPF= exp(-(D.^2)/(2*D0.^2)); % the Gaussian lowpass filter transfer function
 % transform of the padded image (Notice that the zero frequency is supposed
 % to be shifted to the center of the Fourier transform)
 
-%Fourier transform of the padded image
+%Fourier transform of the padded image (& sifted)
 FTPI = fftshift(fft2(fp));
 
 OLP= GLPF.*FTPI; % The Fourier transform of the lowpass filtered image
@@ -103,7 +105,7 @@ olpf= real(ifft2(ifftshift(OLP))); % The padded lowpass filtered image of size P
 % Extract the final lowpass filtered image from the padded lowpass filtered
 % image
 
-% get part with the image
+% get part with the image from the padded results
 olp= olpf(1:M, 1:N); % The final lowpass filtered image
     
 %% Find the final highpass filtered image
