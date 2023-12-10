@@ -21,11 +21,11 @@ imshow(H1)
 imwrite(H1, '.\Lab4_SavedImages\H1.tif')
 %%
 % P2 & P3
-[r,t] = find(H==max(H(:)))
+[r,t] = find(H==max(H(:)));
 angle = teta(t(1))
 %%
 % P4 & P5
-adjustAngle = angle - 90;
+adjustAngle = angle + 90;
 Image1a_rotated = imrotate(image1a,adjustAngle,'bicubic', 'crop');
 figure
 imshow(Image1a_rotated);
