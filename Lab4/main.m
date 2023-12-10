@@ -22,10 +22,10 @@ imwrite(H1, '.\Lab4_SavedImages\H1.tif')
 %%
 % P2 & P3
 [r,t] = find(H==max(H(:)));
-angle = teta(t(1))
+ang = teta(t(1))
 %%
 % P4 & P5
-adjustAngle = angle + 90; % (teta-90*sign(teta))
+adjustAngle = (ang-90*sign(ang)) % FIXA (teta-90*sign(teta))
 Image1a_rotated = imrotate(image1a,adjustAngle,'bicubic', 'crop');
 figure
 imshow(Image1a_rotated);
@@ -42,7 +42,7 @@ image1b = imread("Lab4_Images\Image1b.tif");
 angle = teta(t(1))
 %%
 % P7 & P8
-adjustAngle = angle + 90 % (teta-90*sign(teta))
+adjustAngle = angle + 90 % Borde va rätt (teta-90*sign(teta))
 Image1b_rotated = imrotate(image1b,adjustAngle,'bicubic', 'crop');
 figure
 imshow(Image1b_rotated);
@@ -179,3 +179,27 @@ end
 figure
 imshow(Object_Im)
 imwrite(Object_Im, ".\Lab4_SavedImages\Object_Im.tif")
+%% BRICK WALL
+% 
+BrickWall1 = im2double(imread('Lab4_Images\brick1.jpg'));
+BrickWall2 = im2double(imread('Lab4_Images\brick2.jpg'));
+BrickWall3 = im2double(imread('Lab4_Images\brick3.jpg'));
+%figure
+%imshow(BrickWall1(:,:,1));
+%figure
+%imshow(BrickWall2(:,:,2));
+%figure
+%imshow(BrickWall3(:,:,3));
+
+[IMG, nofr]=CountBrickRows(BrickWall1);
+nofr
+figure
+imshow(IMG)
+[IMG, nofr]=CountBrickRows(BrickWall2);
+nofr
+figure
+imshow(IMG)
+[IMG, nofr]=CountBrickRows(BrickWall3);
+nofr
+figure
+imshow(IMG)

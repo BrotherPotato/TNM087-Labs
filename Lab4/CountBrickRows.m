@@ -69,8 +69,8 @@ bfilt= imfilter(bgray, lp, 'symmetric'); % The filtered version of the grayscale
 % to separate the mortar joints from the bricks
 
 g_thresh = graythresh(bfilt);
-% imbinarize(bfilt, g_thresh);?
-b_thresh= g_thresh; % The thresholded image
+
+b_thresh= imbinarize(bfilt, g_thresh); % The thresholded image
 
 %% Use Hough transform to find the angle corresponding to the principal lines
 
@@ -90,7 +90,7 @@ trot = (teta-90*sign(teta)); % Angle of rotation.
 %% Rotate the input image to the horizontal level
 % This gives you the first output argument of the function
 
-IMG= imrotate(bgray, trot,'nearest','crop');; % The rotated image to the horizontal level (the first output argument of this funciton)
+IMG= imrotate(bgray, trot,'nearest','crop'); % The rotated image to the horizontal level (the first output argument of this funciton)
 % Before continuing to the next step, make sure that your code works
 % properly so far. See the instructions.
 
@@ -100,20 +100,20 @@ IMG= imrotate(bgray, trot,'nearest','crop');; % The rotated image to the horizon
 % Use nearest interpolation to make sure that the rotated image will be
 % binary
 
-b_rot=...; % The rotated thresholded image
+b_rot= imrotate(b_thresh, trot,'nearest','crop'); % The rotated thresholded image
 % View this image, but remove or comment before submitting the
 % file
 
 %% Find the number of 1:s in each row (and normalize according to the instructions)
 
-sum_row=...; % The number of ones in each row
+sum_row= sum((b_rot')/size(bgray, 2)); % The number of ones in each row
 % Display this graph by plot, but remove or comment before submitting the
 % file
 
 %% Threshold your result according to the instructions
 % This is to define a row of mortar joint
 
-sum_thresh=...; % The thresholded version of sum_row
+sum_thresh= imbinarize(sum_row,0.5); % The thresholded version of sum_row
 % Display this graph by plot, but remove or comment before submitting the
 % file
 
@@ -121,7 +121,11 @@ sum_thresh=...; % The thresholded version of sum_row
 % Calculate how many times the above graph (sum_thresh) goes from 0 to 1 by using the
 % first derivative according to the instructions
 
-nofr=...; % The number of rows of the bricks (the seond output argument of this function)
+kernel = [-1, 1];
+
+numOfBrick = conv(sum_thresh, kernel', 'same');
+
+nofr= sum(numOfBrick==1) -1; % The number of rows of the bricks (the seond output argument of this function)
 
 %% Test your code on three test images
 % Use the three given test images, brick1.jpg, brick2.jpg and brick3.jpg
