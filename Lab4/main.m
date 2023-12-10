@@ -125,5 +125,55 @@ level = graythresh(T_hat);% "computes a global threshold T from grayscale image 
 rice_thresh = T_hat>level; 
 imshow(rice_thresh)
 imwrite(rice_thresh, ".\Lab4_SavedImages\r_thresh.png")
+%% Labelling and object feature
+% P13 
+L = bwlabel(Image1c_clean);
+imshow(L, [])
+
+imwrite(L, ".\Lab4_SavedImages\im13.png");
 %%
-% P13
+% P14
+S = regionprops(L,'Perimeter','Area','EulerNumber')
+%Perimeter = S(1).Perimeter;
+for n=1:length(S)
+ Perimeter(n)=S(n).Perimeter; 
+ Area(n)=S(n).Area;
+ Euler(n)=S(n).EulerNumber;
+end
+
+LargeO=find(Area>3000)
+
+Perimeter(LargeO)
+
+LargeO_Im=zeros(r,c); % creates an empty matrix
+for n=1:length(LargeO) % the number of large objects
+ LargeO_Im(L==LargeO(n))=1; % Large object area is set to 1
+end
+
+figure
+imshow(LargeO_Im)
+imwrite(LargeO_Im, ".\Lab4_SavedImages\LargeO_Im.png");
+%%
+% P15
+hist(Perimeter);
+
+SmallO=find(Perimeter<200)
+
+Perimeter1 = Perimeter(SmallO)
+Area1 = Area(SmallO)
+Euler1 = Euler(SmallO)
+
+%%
+% P16
+Objects = find(Area > 3000 & Euler > 0)
+%Area2 = Area(Objects)
+%Euler2 = Euler(Objects)
+%Per2 = Perimeter(Objects)
+
+Object_Im = zeros(r,c);
+for n=1:length(Objects) % the number of large objects
+ Object_Im(L==Objects(n))=1; % Large object area is set to 1
+end
+figure
+imshow(Object_Im)
+imwrite(Object_Im, ".\Lab4_SavedImages\Object_Im.png")
