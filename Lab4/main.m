@@ -1,5 +1,6 @@
 clear
 clc
+close all
 
 image1a = imread("Lab4_Images\Image1a.tif");
 image1b = imread("Lab4_Images\Image1b.tif");
@@ -17,9 +18,22 @@ minValue = min(H(:));
 H1 = (H-minValue)/(maxValue-minValue);
 figure 
 imshow(H1)
-imwrite(H1, '.\Lab2_SavedImages\H1.png')
+imwrite(H1, '.\Lab4_SavedImages\H1.tif')
 %%
-% P2
+% P2 & P3
 [r,t] = find(H==max(H(:)))
 angle = teta(t(1))
 %%
+% P4
+adjustAngle = angle - 90;
+Image1a_rotated = imrotate(image1a,adjustAngle,'bicubic', 'crop');
+figure
+imshow(Image1a_rotated);
+imwrite(Image1a_rotated, '.\Lab4_SavedImages\Image1a_rotated.tif');
+%%
+% P5
+image1b = imread("Lab4_Images\Image1b.tif");
+[H, teta, ro] = hough(image1b, 'Rhoresolution',5,'Theta',-90:0.5:89.5); 
+imshow(H)
+%%
+% p6
