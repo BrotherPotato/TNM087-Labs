@@ -24,17 +24,18 @@ imwrite(H1, '.\Lab4_SavedImages\H1.tif')
 [r,t] = find(H==max(H(:)))
 angle = teta(t(1))
 %%
-% P4
+% P4 & P5
 adjustAngle = angle - 90;
 Image1a_rotated = imrotate(image1a,adjustAngle,'bicubic', 'crop');
 figure
 imshow(Image1a_rotated);
 imwrite(Image1a_rotated, '.\Lab4_SavedImages\Image1a_rotated.tif');
-%%
+
 % P5
 image1b = imread("Lab4_Images\Image1b.tif");
 [H, teta, ro] = hough(image1b, 'Rhoresolution',5,'Theta',-90:0.5:89.5); 
-imshow(H)
+%figure
+%imshow(H)
 %%
 % P6
 [r,t] = find(H==max(H(:)))
@@ -79,22 +80,22 @@ imwrite(Image1c_clean, ".\Lab4_SavedImages\Image1c_clean.tif");
 r=10; 
 SE = strel('disk',r, 0); % type, len, deg
 imageDiscs = imopen(Image1c_clean,SE);
-figure
-imshow(imageDiscs)
+%figure
+%imshow(imageDiscs)
 %%
 % P11b
 MN = [15 100]; 
 SE = strel('rectangle',MN); % type, len, deg
 imageRectangles = imopen(Image1c_clean,SE);
-figure
-imshow(imageRectangles)
+%figure
+%imshow(imageRectangles)
 %%
 % P11c
 r=15; 
 SE = strel('disk',r, 0); % type, len, deg
 imageDiscsLarge = imopen(Image1c_clean,SE);
-figure
-imshow(imageDiscsLarge)
+%figure
+%imshow(imageDiscsLarge)
 %%
 % P11d
 imageDiscsSmall = imageDiscs - imageDiscsLarge;
@@ -114,8 +115,8 @@ imshow(imageRice)
 
 SE = strel('disk', 40);
 imageRiceOpen = imopen(imageRice,SE);
-figure
-imshow(imageRiceOpen)
+%figure
+%imshow(imageRiceOpen)
 
 T_hat = imageRice - imageRiceOpen;
 figure
@@ -123,6 +124,7 @@ imshow(T_hat);
 
 level = graythresh(T_hat);% "computes a global threshold T from grayscale image I, using Otsu's method"
 rice_thresh = T_hat>level; 
+figure
 imshow(rice_thresh)
 imwrite(rice_thresh, ".\Lab4_SavedImages\r_thresh.png")
 %% Labelling and object feature
@@ -157,7 +159,7 @@ imwrite(LargeO_Im, ".\Lab4_SavedImages\LargeO_Im.png");
 % P15
 hist(Perimeter);
 
-SmallO=find(Perimeter<200)
+SmallO=find(Perimeter<116) % bin right edge of the smallest one
 
 Perimeter1 = Perimeter(SmallO)
 Area1 = Area(SmallO)
