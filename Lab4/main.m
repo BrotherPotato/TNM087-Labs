@@ -126,13 +126,13 @@ level = graythresh(T_hat);% "computes a global threshold T from grayscale image 
 rice_thresh = T_hat>level; 
 figure
 imshow(rice_thresh)
-imwrite(rice_thresh, ".\Lab4_SavedImages\r_thresh.png")
+imwrite(rice_thresh, ".\Lab4_SavedImages\r_thresh.tif")
 %% Labelling and object feature
 % P13 
 L = bwlabel(Image1c_clean);
 imshow(L, [])
 
-imwrite(L, ".\Lab4_SavedImages\im13.png");
+imwrite(L, ".\Lab4_SavedImages\im13.tif");
 %%
 % P14
 S = regionprops(L,'Perimeter','Area','EulerNumber')
@@ -154,7 +154,7 @@ end
 
 figure
 imshow(LargeO_Im)
-imwrite(LargeO_Im, ".\Lab4_SavedImages\LargeO_Im.png");
+imwrite(LargeO_Im, ".\Lab4_SavedImages\LargeO_Im.tif");
 %%
 % P15
 hist(Perimeter);
