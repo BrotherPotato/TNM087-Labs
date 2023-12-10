@@ -36,4 +36,74 @@ image1b = imread("Lab4_Images\Image1b.tif");
 [H, teta, ro] = hough(image1b, 'Rhoresolution',5,'Theta',-90:0.5:89.5); 
 imshow(H)
 %%
-% p6
+% P6
+[r,t] = find(H==max(H(:)))
+angle = teta(t(1))
+%%
+% P7 & P8
+adjustAngle = angle + 90
+Image1b_rotated = imrotate(image1b,adjustAngle,'bicubic', 'crop');
+figure
+imshow(Image1b_rotated);
+imwrite(Image1b_rotated, '.\Lab4_SavedImages\Image1b_rotated.tif');
+%% Morphology
+clear
+clc
+close all
+image1c = imread("Lab4_Images\Image1c.tif");
+imshow(image1c)
+% P9
+% Structuring element
+r=3; 
+SE = strel('disk',r);
+
+% Morphological openig and closing for noise
+image2c = imopen(image1c,SE);
+image3c = imclose(image2c,SE);
+imshow(image3c)
+imwrite(image3c, ".\Lab4_SavedImages\1cNoNoise.tif");
+%%
+% P10
+len = 6;
+deg = 0;
+SE = strel('line',len,deg);
+
+% Morphological openig and closing for noise
+image2c = imopen(image3c,SE);
+Image1c_clean = imclose(image2c,SE);
+figure
+imshow(Image1c_clean)
+imwrite(Image1c_clean, ".\Lab4_SavedImages\Image1c_clean.tif");
+%%
+% P11a
+r=10; 
+SE = strel('disk',r, 0); % type, len, deg
+imageDiscs = imopen(Image1c_clean,SE);
+figure
+imshow(imageDiscs)
+%%
+% P11b
+MN = [15 100]; 
+SE = strel('rectangle',MN); % type, len, deg
+imageRectangles = imopen(Image1c_clean,SE);
+figure
+imshow(imageRectangles)
+%%
+% P11c
+r=15; 
+SE = strel('disk',r, 0); % type, len, deg
+imageDiscsLarge = imopen(Image1c_clean,SE);
+figure
+imshow(imageDiscsLarge)
+%%
+% P11d
+imageDiscsSmall = imageDiscs - imageDiscsLarge;
+[r,c]=size(image1c);
+RGB=zeros(r,c,3);
+RGB(:,:,1) = imageRectangles;
+RGB(:,:,2) = imageDiscsLarge;
+RGB(:,:,3) = imageDiscsSmall;
+imshow(RGB)
+imwrite(RGB, ".\Lab4_SavedImages\RGB.tif");
+%%
+% P12
