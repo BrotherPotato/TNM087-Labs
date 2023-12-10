@@ -107,3 +107,23 @@ imshow(RGB)
 imwrite(RGB, ".\Lab4_SavedImages\RGB.tif");
 %%
 % P12
+imageRice = imread("Lab4_Images\rice-shaded.tif");
+imageRice = im2double(imageRice);
+figure
+imshow(imageRice)
+
+SE = strel('disk', 40);
+imageRiceOpen = imopen(imageRice,SE);
+figure
+imshow(imageRiceOpen)
+
+T_hat = imageRice - imageRiceOpen;
+figure
+imshow(T_hat);
+
+level = graythresh(T_hat);% "computes a global threshold T from grayscale image I, using Otsu's method"
+rice_thresh = T_hat>level; 
+imshow(rice_thresh)
+imwrite(rice_thresh, ".\Lab4_SavedImages\r_thresh.png")
+%%
+% P13
