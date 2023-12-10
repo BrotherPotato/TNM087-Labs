@@ -76,21 +76,19 @@ b_thresh= g_thresh; % The thresholded image
 
 [H, teta,~] = hough(b_thresh,'Rhoresolution',5, 'Theta',-90:0.5:89.5);
 
-[~,t] = find(H== max(H(:)));
-
-teta=teta(t); % The angle corresponding to the principal lines (rows of mortar joints)
+teta=...; % The angle corresponding to the principal lines (rows of mortar joints)
     
 %% Find the angle of rotation, to rotate the image to the horizontal level
 % Make sure that you use right sign in front of the angle (positive for
 % counterclockwise and negative for clockwise rotation)
 
-trot = (teta-90*sign(teta)); % Angle of rotation.
+trot =... % Angle of rotation.
     % If the rotation is counreclockwise, trot should be positive, otherwise negative. 
 
 %% Rotate the input image to the horizontal level
 % This gives you the first output argument of the function
 
-IMG= imrotate(bgray, trot,'nearest','crop');; % The rotated image to the horizontal level (the first output argument of this funciton)
+IMG=...; % The rotated image to the horizontal level (the first output argument of this funciton)
 % Before continuing to the next step, make sure that your code works
 % properly so far. See the instructions.
 

@@ -25,7 +25,7 @@ imwrite(H1, '.\Lab4_SavedImages\H1.tif')
 angle = teta(t(1))
 %%
 % P4 & P5
-adjustAngle = angle + 90;
+adjustAngle = angle + 90; % (teta-90*sign(teta))
 Image1a_rotated = imrotate(image1a,adjustAngle,'bicubic', 'crop');
 figure
 imshow(Image1a_rotated);
@@ -42,7 +42,7 @@ image1b = imread("Lab4_Images\Image1b.tif");
 angle = teta(t(1))
 %%
 % P7 & P8
-adjustAngle = angle + 90
+adjustAngle = angle + 90 % (teta-90*sign(teta))
 Image1b_rotated = imrotate(image1b,adjustAngle,'bicubic', 'crop');
 figure
 imshow(Image1b_rotated);
