@@ -176,4 +176,4 @@ for n=1:length(Objects) % the number of large objects
 end
 figure
 imshow(Object_Im)
-imwrite(Object_Im, ".\Lab4_SavedImages\Object_Im.png")
+imwrite(Object_Im, ".\Lab4_SavedImages\Object_Im.tif")
