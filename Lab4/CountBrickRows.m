@@ -56,19 +56,19 @@ function [IMG, nofr]=CountBrickRows(in)
 %% Make the input color image grayscale, 
 % by choosing its most appropriate channel (according to the instructions)
 
-
+% Blue channel made the bricks stand out from the mortar the best
 bgray= in(:,:,3); % The grayscale version of the input color image
 
 %% Lowpass filter your image
 
-lp = ones(5)/25;
+lp = ones(5)/25; % creating low pass filter 5x5
 
-bfilt= imfilter(bgray, lp, 'symmetric'); % The filtered version of the grayscale image
+bfilt= imfilter(bgray, lp, 'symmetric'); % The lowpass filtered version of the grayscale image
     
 %% Threshold your image
 % to separate the mortar joints from the bricks
 
-g_thresh = graythresh(bfilt);
+g_thresh = graythresh(bfilt); % Otsu's algorithm
 
 b_thresh= imbinarize(bfilt, g_thresh); % The thresholded image
 
@@ -84,7 +84,8 @@ teta=teta(t); % The angle corresponding to the principal lines (rows of mortar j
 % Make sure that you use right sign in front of the angle (positive for
 % counterclockwise and negative for clockwise rotation)
 
-trot = (teta-90*sign(teta)); % Angle of rotation.
+% We adjust the rotation direction through the sign of theta
+trot = teta-90*sign(teta); % Angle of rotation.
     % If the rotation is counreclockwise, trot should be positive, otherwise negative. 
 
 %% Rotate the input image to the horizontal level
@@ -113,19 +114,22 @@ sum_row= sum((b_rot')/size(bgray, 2)); % The number of ones in each row
 %% Threshold your result according to the instructions
 % This is to define a row of mortar joint
 
-sum_thresh= imbinarize(sum_row,0.5); % The thresholded version of sum_row
+sum_thresh= imbinarize(sum_row,0.6); % The thresholded version of sum_row
 % Display this graph by plot, but remove or comment before submitting the
 % file
+%plot(sum_thresh)
 
 %% Find the number of rows of bricks
 % Calculate how many times the above graph (sum_thresh) goes from 0 to 1 by using the
 % first derivative according to the instructions
 
-kernel = [-1, 1];
+kernel = [-1, 1]; %step kernel
 
-numOfBrick = conv(sum_thresh, kernel', 'same');
-
-nofr= sum(numOfBrick==1) -1; % The number of rows of the bricks (the seond output argument of this function)
+numOfBrick = filter2(kernel, sum_thresh, 'same'); %corrolation
+plot(numOfBrick)
+%When the kernel is halfway outside the image due to it being "same" size
+%the mortar is counted one more time.
+nofr= sum(numOfBrick==1)-1; % The number of rows of the bricks (the seond output argument of this function)
 
 %% Test your code on three test images
 % Use the three given test images, brick1.jpg, brick2.jpg and brick3.jpg

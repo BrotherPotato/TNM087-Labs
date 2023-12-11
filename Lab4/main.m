@@ -203,3 +203,49 @@ imshow(IMG)
 nofr
 figure
 imshow(IMG)
+
+%% 4.3
+
+MacnRice1 = im2double(imread('Lab4_Images\MacnRice1.tif'));
+MacnRice2 = im2double(imread('Lab4_Images\MacnRice2.tif'));
+MacnRice3 = im2double(imread('Lab4_Images\MacnRice3.tif'));
+%figure
+%imshow(MacnRice1(:,:,1));
+%figure
+%imshow(MacnRice1(:,:,2));
+%figure
+%imshow(MacnRice1(:,:,3));
+%plot(MacnRice1(:,:,3))
+
+bgray = MacnRice3(:,:,3);
+
+b_thresh =bgray < graythresh(bgray); % The thresholded image
+%plot(b_thresh)
+figure
+imshow(b_thresh)
+
+r=4; 
+SE = strel('disk',r);
+
+b_tresh = imopen(b_thresh,SE);
+b_thresh = imclose(b_tresh,SE);
+figure
+imshow(b_thresh)
+%%
+clf
+close all
+clear
+
+MacnRice1 = im2double(imread('Lab4_Images\MacnRice1.tif'));
+MacnRice2 = im2double(imread('Lab4_Images\MacnRice2.tif'));
+MacnRice3 = im2double(imread('Lab4_Images\MacnRice3.tif'));
+
+[ img , nrRice, nrSmallmac, nrLargemac] = CountObjects(MacnRice1);
+[ img2 , nrRice2, nrSmallmac2, nrLargemac2] = CountObjects(MacnRice2);
+[ img3 , nrRice3, nrSmallmac3, nrLargemac3] = CountObjects(MacnRice3);
+figure
+imshow(img)
+figure
+imshow(img2)
+figure
+imshow(img3)
