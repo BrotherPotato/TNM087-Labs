@@ -29,7 +29,7 @@ function [IMG, nofr]=CountBrickRows(in)
 %% Basic version control (in case you need more than one attempt)
 %
 % Version: 1
-% Date: today
+% Date: 2023-12-11
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each

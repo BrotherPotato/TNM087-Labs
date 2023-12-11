@@ -29,7 +29,7 @@ function [IMG, noRice, noSmallMacs, noLargeMacs]=CountObjects(in)
 %% Basic version control (in case you need more than one attempt)
 %
 % Version: 1
-% Date: today
+% Date: 2023-12-11
 %
 % Gives a history of your submission to Lisam.
 % Version and date for this function have to be updated before each
@@ -55,14 +55,12 @@ function [IMG, noRice, noSmallMacs, noLargeMacs]=CountObjects(in)
 % by choosing its most appropriate channel 
 
 %BLUE has the best contrast between the objects and the background
-bgray =in(:,:,3); % The grayscale version of the input color image
+bgray = in(:,:,3); % The grayscale version of the input color image
     
 %% Threshold your image
 % to separate the objects from the backgroound
 
-b_thresh =bgray < graythresh(bgray); % The thresholded image
-%plot(b_thresh)
-%imshow(b_thresh)
+b_thresh = bgray < graythresh(bgray); % The thresholded image
     
 %% Clean up the binary image 
 % Use morphological operations to clean up the binary image from noise. 
@@ -70,38 +68,40 @@ b_thresh =bgray < graythresh(bgray); % The thresholded image
 % (i.e. single foreground pixels, or groups of connected foreground pixels, 
 % that do not belong to the object classes
 
-r=4; % good radius for all images 
-SE = strel('disk',r);
+r = 4; % good radius for all images 
+SE = strel('disk',r); % we used disk elements since we thought it would work well with the rice
 
 % Morphological openig and closing for noise
 b_thresh = imopen(b_thresh,SE);
 b_thresh = imclose(b_thresh,SE);
 %imshow(b_thresh)
 
-b_clean =b_thresh; % Cleaned up binary image
+b_clean = b_thresh; % Cleaned up binary image
 
 %% Labelling
 %  Use labelling to assign every object a unique number
 
-% connectivity 8 (default)
+% connectivity 8 (default), labels each object
 L = bwlabel(b_clean); % Labelled image
     
 %% Object features
 % Compute relevant object features that you can use to classify 
 % the three classes of objects
 
-Stats = regionprops(L, 'Area') % Create struct with relevant object properties
-
+% we decided to only use area to classify each object
+Stats = regionprops(L, 'Area'); % Create struct with relevant object properties
+% we add the values for each area to a vector
 for n=1:length(Stats)
     Area(n)=Stats(n).Area;
 end
-  
+
 %% Object classification
 % Based on your object features, classify the objects, i.e. for each
 % labelled object: decide if it belongs to the three classes: Rice, SmallMacs, or LargeMacs 
 % In case you didn't suceed in cleaining up all false objects, you should
 % discard them here, so they don't count as the classes of objects
 
+% we group each object by creating 2 bounds to divide them in to 3 groups
 upperbound = 6000;
 lowerbound = 2000;
 
@@ -120,9 +120,15 @@ noLargeMacs = length(LargeMacs);% Number of large macoronis
 % the original background, highlight the borders of the objects in the
 % original image in different colors (or some other way of displayig the
 % objects)
-[M,N] = size(L);
 
+% we create a new image "RGB" with all zeroes
+[M,N] = size(L);
 RGB = zeros(M,N,3);
+% for each object group (rice, smallmacs, largemacs), we iterate through
+% each object and add a 1 where we find a part of this object, 
+% for example: L == Rice(n) gives a 1 where there are rice in the image L,
+% we add this to RGB(:,:,1) through "RGB(:,:,1) = RGB(:,:,1) +" to keep the
+% previous values
 for n=1:noRice
 RGB(:,:,1) = RGB(:,:,1) + (L == Rice(n));
 end
